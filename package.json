@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "An auth example made with express, mongoose, jwt, typescript and docker",
   "main": "src/index.ts",
-  "scripts": {},
+  "scripts": {
+    "lint": "jshint src"
+  },
   "keywords": [
     "express",
     "typescript",
@@ -14,6 +16,7 @@
   "license": "CC0",
   "devDependencies": {
     "@types/express": "^4.17.17",
+    "jshint": "^2.13.6",
     "nodemon": "^3.0.1",
     "ts-node": "^10.9.1",
     "typescript": "^5.1.6"
