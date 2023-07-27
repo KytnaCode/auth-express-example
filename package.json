@@ -5,9 +5,10 @@
   "main": "dist",
   "type": "module",
   "scripts": {
-    "start": "node dist",
+    "start": "NODE_ENV=prod node dist",
     "prestart": "pnpm build",
-    "dev": "tsc -p tsconfig.json --watch & nodemon dist",
+    "dev": "tsc -p tsconfig.json --watch & NODE_ENV=dev nodemon dist",
+    "predev": "pnpm build",
     "build": "tsc -p tsconfig.json",
     "prebuild": "rimraf dist",
     "lint": "eslint --fix src"
