@@ -10,7 +10,7 @@
     "dev": "tsc -p tsconfig.json --watch & NODE_ENV=dev nodemon dist",
     "predev": "pnpm build",
     "build": "tsc -p tsconfig.json",
-    "prebuild": "rimraf dist",
+    "clean": "rimraf dist && rm -f tsconfig.tsbuildinfo",
     "lint": "eslint --fix src"
   },
   "keywords": [
