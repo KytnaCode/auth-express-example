@@ -5,6 +5,8 @@ import createApp from './app.js';
 import {config} from 'dotenv';
 import MissingEnvironmentVariablesError from './util/errors/missingEnvironmentVariablesError.js';
 
+config(); // load environment variables
+
 const requiredEnvVariables = [
   'PORT',
   'MONGO_URL',
