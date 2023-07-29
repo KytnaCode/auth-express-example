@@ -1,0 +1,8 @@
+node_modules
+dist
+.eslintrc.json
+app.log
+pnpm-lock.yaml
+tsconfig.tsbuildinfo
+.gitignore
+.dockerignore
