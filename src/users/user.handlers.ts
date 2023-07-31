@@ -5,10 +5,8 @@ import UserModel from './userModel.js';
 import forge from 'node-forge';
 
 export const onGet = async (req: Request, res: Response) => {
-  const body = req.body;
-
   try {
-    const user = await userModel.find({ ...body });
+    const user = await userModel.find({ ...req.body }); // TODO: Validate user input
 
     res.status(200).json(user);
   } catch (e) {
@@ -21,7 +19,7 @@ export const onGet = async (req: Request, res: Response) => {
 };
 
 export const onPost = async (req: Request, res: Response) => {
-  const user = new UserModel({...req.body});
+  const user = new UserModel({...req.body}); // TODO: Validate user input
 
   try {
     const md = forge.md.sha256.create();
@@ -41,12 +39,8 @@ export const onPost = async (req: Request, res: Response) => {
 };
 
 export const onGetUser = async (req: Request, res: Response) => {
-  const id = req.params['userid'];
-
-  if (!id) return res.status(400).send('Bad Request');
-
   try {
-    const user = await UserModel.findById(id);
+    const user = await UserModel.findById(req.params['userId']);
 
     res.status(200).json(user);
   } catch (e) {
@@ -59,12 +53,8 @@ export const onGetUser = async (req: Request, res: Response) => {
 };
 
 export const onDeleteUser = async (req: Request, res: Response) => {
-  const id = req.params['userId'];
-
-  if (!id) return res.status(400).send('Bad Request');
-
   try {
-    await UserModel.findByIdAndDelete(id);
+    const user = await UserModel.findByIdAndDelete(req.params['userId']);
 
     res.status(200).send('User deleted');
   } catch (e) {
@@ -76,17 +66,13 @@ export const onDeleteUser = async (req: Request, res: Response) => {
 };
 
 export const onPatchUser = async (req: Request, res: Response) => {
-  const id = req.params['userId'];
-
-  if (!id) return res.status(400).send('Bad Request');
-
   try {
     const md = forge.md.sha256.create();
 
     if (req.body.password)
       req.body.password = md.update(req.body.password).digest().toHex();
 
-    const user = await UserModel.findByIdAndUpdate(id, { ...req.body }, {new: true});
+    const user = await UserModel.findByIdAndUpdate(req.params['userId'], { ...req.body }, {new: true}); // TODO: Validate user input
 
     res.status(200).json(user);
   } catch (e) {
@@ -98,12 +84,10 @@ export const onPatchUser = async (req: Request, res: Response) => {
 };
 
 export const onPutUser = async (req: Request, res: Response) => {
-  const id = req.params['userId'];
-
-  if (!id) return res.status(400).send('Bad Request');
-
   try {
-    const user = await UserModel.findByIdAndUpdate(id, req.body, {new: true});
+    const user = await UserModel.findByIdAndUpdate(req.params['userId'], req.body, {new: true}); // TODO: Validate user input
+
+    if (!user) return res.status(404).send('User not found');
 
     res.status(200).json(user);
   } catch (e) {
