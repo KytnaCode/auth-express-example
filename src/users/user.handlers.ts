@@ -24,9 +24,7 @@ export const onPost = async (req: Request, res: Response) => {
   try {
     user.password = hashText(user.password); // Hash password
 
-    user.password = md.update(user.password).digest().toHex();
-
-    await user.save();
+    await user.save(); // Save user to database
 
     res.status(201).json(user);
   } catch (e) {
@@ -56,7 +54,9 @@ export const onDeleteUser = async (req: Request, res: Response) => {
   try {
     const user = await UserModel.findByIdAndDelete(req.params['userId']);
 
-    res.status(200).send('User deleted');
+    if (!user) return res.status(404).send('User not found');
+
+    res.status(204).send('User deleted');
   } catch (e) {
     const error = e as Error;
 
