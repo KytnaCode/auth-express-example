@@ -7,8 +7,10 @@
   "scripts": {
     "start": "NODE_ENV=prod node dist",
     "prestart": "pnpm build",
-    "dev": "tsc -p tsconfig.json --watch & NODE_ENV=dev nodemon dist",
-    "predev": "pnpm build",
+    "dev": "concurrently \"tsc -p tsconfig.json --watch\" \"nodemon -e 'yaml' --watch src --exec 'pnpm copy'\" \"NODE_ENV=dev nodemon -e js,yaml dist\" ",
+    "predev": "pnpm build && pnpm copy",
+    "postbuild": "pnpm copy",
+    "copy": "copyfiles -u 1 src/swagger.yaml dist/",
     "build": "tsc -p tsconfig.json",
     "clean": "rimraf dist tsconfig.tsbuildinfo http.log app.log",
     "lint": "eslint --fix src"
