@@ -2,7 +2,7 @@ import type {Request, Response} from 'express';
 import userModel from './userModel.js';
 import logger from '../util/logger.js';
 import UserModel from './userModel.js';
-import forge from 'node-forge';
+import hashText from '../util/hashText.js';
 
 export const onGet = async (req: Request, res: Response) => {
   try {
@@ -22,7 +22,7 @@ export const onPost = async (req: Request, res: Response) => {
   const user = new UserModel({...req.body}); // TODO: Validate user input
 
   try {
-    const md = forge.md.sha256.create();
+    user.password = hashText(user.password); // Hash password
 
     user.password = md.update(user.password).digest().toHex();
 
@@ -67,10 +67,8 @@ export const onDeleteUser = async (req: Request, res: Response) => {
 
 export const onPatchUser = async (req: Request, res: Response) => {
   try {
-    const md = forge.md.sha256.create();
-
     if (req.body.password)
-      req.body.password = md.update(req.body.password).digest().toHex();
+      req.body.password = hashText(req.body.password);
 
     const user = await UserModel.findByIdAndUpdate(req.params['userId'], { ...req.body }, {new: true}); // TODO: Validate user input
 
